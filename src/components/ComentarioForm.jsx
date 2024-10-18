@@ -2,25 +2,37 @@ import React from 'react'
 import Card from './Card'
 import { useState } from 'react'
 import ComentarioCalificacion from './ComentarioCalificacion'
-const ComentarioForm = () => {
+
+const ComentarioForm = ({ handleAdd }) => {
 
     const[ text , setText ] = useState('')
+    const [calificacion , setCalificacion ] = useState(0)
 
-    const handleTextChange = (e) => {
+const handleTextChange = (e) => {
 
         setText(e.target.value)
     }
-    
+const handleSubmit = (e) => {
+    e.preventDefault()
+    //crear el objeto comentario
+    const newComentario = {
+        comentario: text,
+        calificacion: calificacion
+    }
+    handleAdd(newComentario);
+}
+
   return (
 <Card>
-<form>
-    <ComentarioCalificacion/>
+<form onSubmit={ handleSubmit }>
+    <ComentarioCalificacion select={(calificacion) =>
+                                 { setCalificacion(calificacion) } }/>
 <div className='input-group'>
         <input type='text' 
         value={ text }
         onChange={ handleTextChange }
         placeholder='Ingrese su comentario aqui'/>
-        <button>
+        <button type="submit">
             Guardar
         </button>
     </div>
