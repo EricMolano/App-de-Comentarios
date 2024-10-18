@@ -1,45 +1,52 @@
-import React from 'react'
-import Card from './Card'
-import { useState } from 'react'
-import ComentarioCalificacion from './ComentarioCalificacion'
+import { React, useState } from 'react';
+import Card from './Card';
+import ComentarioCalificaion from './ComentarioCalificacion';
 
 const ComentarioForm = ({ handleAdd }) => {
 
-    const[ text , setText ] = useState('')
-    const [calificacion , setCalificacion ] = useState(0)
+    const [text, setText] = useState('');
+    const [calificacion, setCalificacion] = useState(0);
 
-const handleTextChange = (e) => {
+    const handleTextChange = (e) => {
+        setText(e.target.value);
+    };
 
-        setText(e.target.value)
-    }
-const handleSubmit = (e) => {
-    e.preventDefault()
-    //crear el objeto comentario
-    const newComentario = {
-        comentario: text,
-        calificacion: calificacion
-    }
-    handleAdd(newComentario);
-}
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-  return (
-<Card>
-<form onSubmit={ handleSubmit }>
-    <ComentarioCalificacion select={(calificacion) =>
-                                 { setCalificacion(calificacion) } }/>
-<div className='input-group'>
-        <input type='text' 
-        value={ text }
-        onChange={ handleTextChange }
-        placeholder='Ingrese su comentario aqui'/>
-        <button type="submit">
-            Guardar
-        </button>
-    </div>
-</form>
-</Card>
+        // Crear el objeto comentario con un id único
+        const newComentario = {
+            id: Date.now(),  // Asigna un id único utilizando la fecha y hora actual
+            comentario: text,
+            calificacion: calificacion
+        };
 
-  )
-}
+        // Llama a handleAdd para agregar el nuevo comentario
+        handleAdd(newComentario);
 
-export default ComentarioForm
+        // Limpiar el formulario después de agregar el comentario
+        setText('');
+        setCalificacion(0);
+    };
+
+    return (
+        <Card>
+            <form onSubmit={handleSubmit}>
+                <ComentarioCalificaion select={(calificacion) => { setCalificacion(calificacion) }} />
+                <div className="input-group">
+                    <input
+                        type="text"
+                        value={text}
+                        onChange={handleTextChange}
+                        placeholder='Ingrese su Comentario aqui'
+                    />
+                    <button type="submit">
+                        Guardar
+                    </button>
+                </div>
+            </form>
+        </Card>
+    );
+};
+
+export default ComentarioForm;
