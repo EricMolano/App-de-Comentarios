@@ -1,11 +1,17 @@
-import React from 'react';
+import {React, useContext, useState} from 'react';
+import ComentariosContexto from '../contexto/ComentariosContexto';
 
-const ComentarioStats = ({ comentarios }) => {
-    const totalComentarios = comentarios.length;
+
+const ComentarioStats = () => {
+
+        const {comments} = useContext(ComentariosContexto)
+        
+
+    const totalComentarios = comments.length;
 
     const calificacionPromedio = 
         totalComentarios > 0
-        ? comentarios.reduce((total, comentario) => total + parseFloat(comentario.calificacion), 0) / totalComentarios
+        ? comments.reduce((total, comentario) => total + parseFloat(comentario.calificacion), 0) / totalComentarios
         : 0;
 
     return (

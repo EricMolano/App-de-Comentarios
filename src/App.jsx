@@ -1,27 +1,20 @@
 import { React , useState } from 'react'
 import Header from './components/Header'
-import ComentarioItem from './components/ComentarioItem';
 import comentarios from './data/Comentarios';
 import ComentarioLista from './components/ComentarioLista';
-import Card from './components/Card';
 import ComentarioStats from './components/ComentarioStats';
 import ComentarioForm from './components/ComentarioForm';
-
+import About from './pages/About';
+import { BrowserRouter as Router , Routes, Route } from 'react-router-dom';
+import AboutIconLink from './components/AboutIconLink';
+import { ComentariosProvider } from './contexto/ComentariosContexto';
 function App() {
 
     const [comments 
         , setComments] 
         = useState(comentarios)
 
-    const borrarItem=id=>  {
-          if (window.confirm
-            ('Esta seguro de borrar el comentario?')) {
-          //asignar: nuevo estado a comments:
-          //filter: para quitar los comentarios
-          //cuyo id concuerde con el parametro
-          setComments (comments.filter((c) => c.id !== id ))
-            }
-          }
+
           
 
     const titulo = "App de Comentarios";
@@ -40,6 +33,8 @@ function App() {
       
 
   return (
+    <ComentariosProvider>
+          <Router>
     <div className='container'>
 
         <Header 
@@ -47,12 +42,29 @@ function App() {
         autor={Autor} 
         ficha={ficha} 
         centrodeformacion={centrodeformacion} />
+        <Routes>
+          <Route exact path="/" element={
+            <>
         <ComentarioForm handleAdd={ addComentario }/>
-        <ComentarioStats comentarios={comments} />
-        <ComentarioLista comments={comments}
-                        handleDelete={borrarItem} />
+        <ComentarioStats />
+        <ComentarioLista />
+        <AboutIconLink />
+            </>
+
+          } >
+
+          </Route>
+          <Route path="/about" element={
+        <About titulo={titulo} autor={Autor} ficha={ficha} />
+
+          }></Route>
+        </Routes>
+
 
     </div>
+    </Router>
+    </ComentariosProvider>
+
   )
 
 }
